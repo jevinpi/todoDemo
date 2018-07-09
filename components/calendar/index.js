@@ -15,10 +15,6 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import NavigationService from './../../config/NavigationService';
 
 import TaskListView  from './../tasks/taskList';
-import SQLite from './../../config/SQLite';
-var sqLite = new SQLite();
-var db;
-
 let currentDay, currentData;
 const mockData = require('./../../mock/data1.json');
 // 切换月份箭头
@@ -38,7 +34,7 @@ class Arrow extends Component{
 }
 export default class CalendarView extends Component{
   constructor(props) {
-    super(props);  
+    super(props);
     this.state = {
       currentDay:  this.timeToString(new Date()),
       currentData: {
@@ -48,16 +44,9 @@ export default class CalendarView extends Component{
     };
     this.addNewTask = this.addNewTask.bind(this);
     this._selectDay = this._selectDay.bind(this);
-  }
-  compennetDidUnmount(){
-    //关闭数据库
-    sqLite.close();
+    this.dataChange = this.dataChange.bind(this);
   }
   componentWillMount(){
-    //开启数据库
-    if(!db){
-        db = sqLite.open();
-    };
     sqLite.getData(this.state.currentDay).then((res) =>{
       this.setState({
         currentData : res
@@ -72,6 +61,11 @@ export default class CalendarView extends Component{
         currentDay : _date
       });
     });
+  }
+  dataChange(data){
+    this.setState({
+      currentData: data
+    })
   }
   addNewTask(){
     NavigationService.navigate('AddNew',{date: this.state.currentDay});
@@ -101,7 +95,7 @@ export default class CalendarView extends Component{
           onPressArrowLeft={substractMonth => substractMonth()}
           onPressArrowRight={addMonth => addMonth()}
         />
-        <TaskListView data={this.state.currentData} date={this.state.currentDay} />
+        <TaskListView dataChange={this.dataChange} data={this.state.currentData} date={this.state.currentDay} />
         <TouchableHighlight style={styles.addBtn} onPress={this.addNewTask}>
           <Image source={require('./../../assets/add.png')}/>
         </TouchableHighlight>

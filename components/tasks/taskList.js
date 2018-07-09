@@ -113,12 +113,14 @@ export default class TaskListView extends Component{
     this.setState({
       currentData: res
     });
+    this.props.dataChange(res);
   }
   _onRefresh(){
     sqLite.getData(this.state.date).then((res) => {
       this.setState({
         currentData: res
-      });    
+      });
+      this.props.dataChange(res);
     })
   }
   render(){

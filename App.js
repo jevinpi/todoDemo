@@ -32,6 +32,8 @@ import SplashScreen from 'rn-splash-screen';
 import SQLite from './config/SQLite';
 global.sqLite = new SQLite();
 global.db;
+//开启数据库
+db = sqLite.open();
 class StartView extends Component{
   componentDidMount(){
     this.timer = setTimeout(() => {
@@ -42,6 +44,8 @@ class StartView extends Component{
       }
       SplashScreen.hide();
     }, 3000);
+  }
+  componentWillMount(){
   }
   componentWillUnmount() {
     this.timer && clearTimeout(this.timer);

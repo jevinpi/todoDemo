@@ -17,6 +17,7 @@ export default class TasksView extends Component{
         "uncompleted":[]
       }
     };
+    this.changeData = this.changeData.bind(this);
   }
   componentWillMount(){
     sqLite.getData().then((res) =>{
@@ -25,10 +26,15 @@ export default class TasksView extends Component{
       });
     });
   }
+  changeData(data){
+    this.setState({
+      currentData : data
+    });   
+  }
   render(){
     return (
       <View style={{height: '100%'}}>
-        <TaskListView data={this.state.currentData}></TaskListView>
+        <TaskListView dataChange={this.changeData} data={this.state.currentData}></TaskListView>
       </View>
     )
   }

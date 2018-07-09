@@ -67,7 +67,7 @@ export default class AddView extends Component{
       }else{
         //插入数据
         sqLite.insertData(taskData,() => {
-          this.props.navigation.navigate('Home');
+          this.props.navigation.push('Home');
         });        
       }
       
